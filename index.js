@@ -22,7 +22,22 @@ function main(ev) {
 	ctx.canvas.width = config.width;
 	ctx.canvas.height = config.height;
 
+	// ตัวแปรตำแหน่งเมฆ
+	let cloud1X = 25, cloud2X = 225, cloud3X = 475;
+	let lastTime = performance.now();
+
 	function draw() {
+	// อัปเดตตำแหน่งเมฆใน draw
+	const now = performance.now();
+	const dt = (now - lastTime) / 1000;
+	lastTime = now;
+	const speed = 30; // px/sec
+	cloud1X -= speed * dt;
+	cloud2X -= speed * dt;
+	cloud3X -= speed * dt;
+	if (cloud1X < -60) cloud1X = 800;
+	if (cloud2X < -60) cloud2X = 800;
+	if (cloud3X < -60) cloud3X = 800;
 		// ใช้ FPS สำหรับการวัดอัตราเฟรมต่อวินาที
 		FPS.update();
 
@@ -34,7 +49,227 @@ function main(ev) {
 		// ใช้ภาพจาก MP1-app-graphics-2d.jpg เป็นแนวทางในการวาดรูป แต่จะวาดอย่างไรก็ได้ตามต้องการ
 
 		// TODO:
-		
+
+		//ท้องฟ้า
+	ctx.fillStyle = "rgba(116, 233, 233, 1)"; 
+	ctx.fillRect(0, 0, 800, 300); //วาดท้องฟ้า
+
+		//ภูเขา
+	ctx.beginPath(); // เริ่มเส้นทางใหม่
+	ctx.moveTo(0, 250); // จุดเริ่มต้นของ curve
+	ctx.quadraticCurveTo(150, 150, 370, 300); // วาด curve แบบ quadratic
+	ctx.lineTo(370, 300); // ลากลงมาด้านล่างสุด
+	ctx.lineTo(0, 300); // ลากกลับไปด้านล่างซ้าย
+	ctx.closePath(); // ปิด path
+	ctx.fillStyle = "#5bf660ff"; 
+	ctx.fill(); // เติมสี
+	ctx.strokeStyle = "Green"; // สีเส้น
+	ctx.lineWidth = 3; 
+	ctx.stroke(); 
+
+		// วาด ภูเขา2
+	ctx.beginPath(); // เริ่มเส้นทางใหม่
+	ctx.moveTo(325, 270); // จุดเริ่มต้นของ curve
+	ctx.bezierCurveTo(450, 150, 600, 290, 800, 220); // วาด curve แบบ bezier
+	ctx.lineTo(800, 300); // ลากลงมาด้านล่างสุดของ
+	ctx.lineTo(370, 300); // ลากกลับไปด้านล่างซ้าย
+	ctx.closePath(); // ปิด path
+	ctx.fillStyle = "#5bf660ff";
+	ctx.fill(); 
+	ctx.strokeStyle = "Green"; //สีเส้น
+	ctx.lineWidth = 3;
+	ctx.stroke(); 
+
+		//เส้นขอบภูเขา
+	ctx.beginPath(); 
+	ctx.moveTo(0, 300); // เริ่มเส้น
+	ctx.lineTo(800, 300); // จุดต่อไปเส้น
+	ctx.strokeStyle = "#000000"; 
+	ctx.lineWidth = 3; 
+	ctx.stroke(); 
+
+		//พระอาทิตย์
+	ctx.beginPath(); // เริ่มเส้นทางใหม่
+	ctx.arc(700, 100, 50, 0, Math.PI * 2); // วาดวงกลม
+	ctx.fillStyle = "#f1df1fff"; 
+	ctx.fill(); // เติมสีวงกลม
+	ctx.strokeStyle = "#cc8238ff"; 
+	ctx.stroke(); 
+
+		// วาดแสงรัศมีรอบพระอาทิตย์
+	const sunX = 700;
+	const sunY = 100;
+	const sunRadius = 50; // รัศมีของพระอาทิตย์
+	const rayLength = 50; // ความยาวของรัศมี
+	const rayCount = 16; // จำนวนรัศมี
+	ctx.save();
+	ctx.strokeStyle = "#ffd700";
+	ctx.lineWidth = 4;
+	for (let i = 0; i < rayCount; i++) {
+		const angle = (2 * Math.PI / rayCount) * i;
+		const startX = sunX + Math.cos(angle) * (sunRadius + 5);
+		const startY = sunY + Math.sin(angle) * (sunRadius + 5);
+		const endX = sunX + Math.cos(angle) * (sunRadius + rayLength);
+		const endY = sunY + Math.sin(angle) * (sunRadius + rayLength);
+		ctx.beginPath();
+		ctx.moveTo(startX, startY);
+		ctx.lineTo(endX, endY);
+		ctx.stroke();
+	}
+	ctx.restore();
+
+
+		//ท้องนา
+	ctx.fillStyle = "rgba(56, 145, 9, 1)"; 
+	ctx.fillRect(0, 302, 800, 300); 
+
+		// ต้นไม้ต้นใหญ่
+	const treeX = 100; // ตำแหน่งต้นไม้
+	const treeY = 300;
+	const trunkWidth = 40;
+	const trunkHeight = 120;
+
+		// ลำต้น
+	ctx.beginPath();
+	ctx.rect(treeX, treeY, trunkWidth, trunkHeight);
+	ctx.fillStyle = "#8B5A2B"; 
+	ctx.fill();
+	ctx.strokeStyle = "#000000"; 
+	ctx.lineWidth = 2;
+	ctx.stroke();
+
+		// ใบไม้ 
+const leaves = [
+	{x: treeX + trunkWidth/2, y: treeY, r: 60},
+	{x: treeX + trunkWidth/2 - 40, y: treeY + 30, r: 40},
+	{x: treeX + trunkWidth/2 + 40, y: treeY + 30, r: 40},
+	{x: treeX + trunkWidth/2, y: treeY - 40, r: 35},
+	{x: treeX + trunkWidth/2, y: treeY, r: 40}
+];
+for (const leaf of leaves) {
+	ctx.beginPath();
+	ctx.arc(leaf.x, leaf.y, leaf.r, 0, Math.PI * 2);
+	ctx.fillStyle = "#228B22";
+	ctx.fill();
+	ctx.strokeStyle = "#145214";
+	ctx.lineWidth = 3;
+	ctx.stroke();
+}
+		// แม่น้ำ
+	const riverStartLeft = {x: 370, y: 300}; // ขอบภูเขา
+	const riverStartRight = {x: 550, y: 300}; 
+	const riverEndLeft = {x: 200, y: 602}; // ปลายล่าง
+	const riverEndRight = {x: 480, y: 602}; 
+
+		// วาดพื้นที่แม่น้ำ
+	ctx.beginPath();
+	ctx.moveTo(riverStartLeft.x, riverStartLeft.y);
+	ctx.bezierCurveTo(370, 490, 400, 400, riverEndLeft.x, riverEndLeft.y); // ขอบซ้าย
+	ctx.lineTo(riverEndRight.x, riverEndRight.y);
+	ctx.bezierCurveTo(570, 500, 490, 400, riverStartRight.x, riverStartRight.y); // ขอบขวา
+	ctx.closePath();
+	ctx.fillStyle = "#5bf6ff"; // สีฟ้าแม่น้ำ
+	ctx.fill();
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+	
+		//บ้าน
+	ctx.beginPath();
+	ctx.rect(600, 400, 175, 125); 
+	ctx.fillStyle = "#dc57f4ff"; 
+	ctx.fill();
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+		//หลังคาบ
+	ctx.beginPath();
+	ctx.moveTo(575, 400); 
+	ctx.lineTo(687.5, 325);
+	ctx.lineTo(800, 400);
+	ctx.closePath();
+	ctx.fillStyle = "#000000ff";
+	ctx.fill();
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+		// ประตู
+	ctx.beginPath();
+	ctx.rect(640, 448, 40, 75);
+	ctx.fillStyle = "#fcd318ff";
+	ctx.fill();
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+		// ลูกบิดประตู
+	ctx.beginPath();
+	ctx.arc(675, 490, 2.5, 0, Math.PI * 2); // ลูกบิดประตู
+	ctx.fillStyle = "#000000";
+	ctx.fill();
+
+		// วาดหน้าต่างบ้าน
+	ctx.beginPath();
+	ctx.rect(720, 425, 40, 40); 
+	ctx.fillStyle = "#87CEEB";
+	ctx.fill();
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+		//เส้นแบ่งหน้าต่าง
+	ctx.beginPath();
+	ctx.moveTo(720, 445);
+	ctx.lineTo(760, 445);
+	ctx.moveTo(740, 425);
+	ctx.lineTo(740, 465);
+	ctx.strokeStyle = "#000000";
+	ctx.lineWidth = 2.5;
+	ctx.stroke();
+
+
+		// เมฆ
+		ctx.beginPath();
+		ctx.moveTo(cloud1X, 55);
+		ctx.bezierCurveTo(cloud1X + 5, 40, cloud1X + 25, 40, cloud1X + 35, 55);
+		ctx.bezierCurveTo(cloud1X + 45, 70, cloud1X + 25, 80, cloud1X + 10, 70);
+		ctx.bezierCurveTo(cloud1X - 5, 70, cloud1X - 5, 60, cloud1X, 55);
+		ctx.closePath();
+		ctx.fillStyle = "#ffffff";
+		ctx.fill();
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 2.5;
+		ctx.stroke();
+
+		// เมฆ2
+		ctx.beginPath();
+		ctx.moveTo(cloud2X, 80);
+		ctx.bezierCurveTo(cloud2X + 10, 65, cloud2X + 40, 65, cloud2X + 50, 80);
+		ctx.bezierCurveTo(cloud2X + 60, 95, cloud2X + 40, 105, cloud2X + 15, 95);
+		ctx.bezierCurveTo(cloud2X, 95, cloud2X, 85, cloud2X, 80);
+		ctx.closePath();
+		ctx.fillStyle = "#ffffff";
+		ctx.fill();
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 2.5;
+		ctx.stroke();
+
+		// เมฆ3
+		ctx.beginPath();
+		ctx.moveTo(cloud3X, 50);
+		ctx.bezierCurveTo(cloud3X + 10, 35, cloud3X + 40, 35, cloud3X + 50, 50);
+		ctx.bezierCurveTo(cloud3X + 60, 65, cloud3X + 40, 75, cloud3X + 15, 65);
+		ctx.bezierCurveTo(cloud3X, 65, cloud3X, 55, cloud3X, 50);
+		ctx.closePath();
+		ctx.fillStyle = "#ffffff";
+		ctx.fill();
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 2.5;
+		ctx.stroke();
+
 
 		// เขตสิ้นสุดของการวาดรูป
 
