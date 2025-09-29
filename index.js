@@ -38,6 +38,8 @@ function main(ev) {
 	if (cloud1X < -60) cloud1X = 800;
 	if (cloud2X < -60) cloud2X = 800;
 	if (cloud3X < -60) cloud3X = 800;
+
+
 		// ใช้ FPS สำหรับการวัดอัตราเฟรมต่อวินาที
 		FPS.update();
 
@@ -95,27 +97,6 @@ function main(ev) {
 	ctx.fill(); // เติมสีวงกลม
 	ctx.strokeStyle = "#cc8238ff"; 
 	ctx.stroke(); 
-
-		// วาดแสงรัศมีรอบพระอาทิตย์
-	const sunX = 700;
-	const sunY = 100;
-	const sunRadius = 50; // รัศมีของพระอาทิตย์
-	const rayLength = 50; // ความยาวของรัศมี
-	const rayCount = 16; // จำนวนรัศมี
-	ctx.save();
-	ctx.strokeStyle = "#ffd700";
-	ctx.lineWidth = 4;
-	for (let i = 0; i < rayCount; i++) {
-		const angle = (2 * Math.PI / rayCount) * i;
-		const startX = sunX + Math.cos(angle) * (sunRadius + 5);
-		const startY = sunY + Math.sin(angle) * (sunRadius + 5);
-		const endX = sunX + Math.cos(angle) * (sunRadius + rayLength);
-		const endY = sunY + Math.sin(angle) * (sunRadius + rayLength);
-		ctx.beginPath();
-		ctx.moveTo(startX, startY);
-		ctx.lineTo(endX, endY);
-		ctx.stroke();
-	}
 	ctx.restore();
 
 
@@ -123,52 +104,61 @@ function main(ev) {
 	ctx.fillStyle = "rgba(56, 145, 9, 1)"; 
 	ctx.fillRect(0, 302, 800, 300); 
 
-		// ต้นไม้ต้นใหญ่
-	const treeX = 100; // ตำแหน่งต้นไม้
-	const treeY = 300;
-	const trunkWidth = 40;
-	const trunkHeight = 120;
 
-		// ลำต้น
+	// ต้นไม้(ลำต้น)
 	ctx.beginPath();
-	ctx.rect(treeX, treeY, trunkWidth, trunkHeight);
+	ctx.rect(100, 300, 40, 120);
 	ctx.fillStyle = "#8B5A2B"; 
 	ctx.fill();
 	ctx.strokeStyle = "#000000"; 
 	ctx.lineWidth = 2;
 	ctx.stroke();
 
-		// ใบไม้ 
-const leaves = [
-	{x: treeX + trunkWidth/2, y: treeY, r: 60},
-	{x: treeX + trunkWidth/2 - 40, y: treeY + 30, r: 40},
-	{x: treeX + trunkWidth/2 + 40, y: treeY + 30, r: 40},
-	{x: treeX + trunkWidth/2, y: treeY - 40, r: 35},
-	{x: treeX + trunkWidth/2, y: treeY, r: 40}
-];
-for (const leaf of leaves) {
+	//ใบไม้ 
 	ctx.beginPath();
-	ctx.arc(leaf.x, leaf.y, leaf.r, 0, Math.PI * 2);
+	ctx.moveTo(120, 220); // ยอดสามเหลี่ยม
+	ctx.lineTo(80, 300); // ฐานซ้าย
+	ctx.lineTo(160, 300); // ฐานขวา
+	ctx.closePath();
 	ctx.fillStyle = "#228B22";
 	ctx.fill();
-	ctx.strokeStyle = "#145214";
-	ctx.lineWidth = 3;
+	ctx.strokeStyle = "#000000ff";
+	ctx.lineWidth = 2;
 	ctx.stroke();
-}
-		// แม่น้ำ
-	const riverStartLeft = {x: 370, y: 300}; // ขอบภูเขา
-	const riverStartRight = {x: 550, y: 300}; 
-	const riverEndLeft = {x: 200, y: 602}; // ปลายล่าง
-	const riverEndRight = {x: 480, y: 602}; 
+
+	//ใบไม้2
+	ctx.beginPath();
+	ctx.moveTo(120, 240); 
+	ctx.lineTo(70, 320);
+	ctx.lineTo(170, 320); 
+	ctx.closePath();
+	ctx.fillStyle = "#228B22";
+	ctx.fill();
+	ctx.strokeStyle = "#000000ff";
+	ctx.lineWidth = 2;
+	ctx.stroke();
+
+	//ใบไม้3
+	ctx.beginPath();
+	ctx.moveTo(120, 260);
+	ctx.lineTo(70, 340);
+	ctx.lineTo(170, 340);
+	ctx.closePath();
+	ctx.fillStyle = "#228B22";
+	ctx.fill();
+	ctx.strokeStyle = "#000000ff";
+	ctx.lineWidth = 2;
+	ctx.stroke();
+
 
 		// วาดพื้นที่แม่น้ำ
 	ctx.beginPath();
-	ctx.moveTo(riverStartLeft.x, riverStartLeft.y);
-	ctx.bezierCurveTo(370, 490, 400, 400, riverEndLeft.x, riverEndLeft.y); // ขอบซ้าย
-	ctx.lineTo(riverEndRight.x, riverEndRight.y);
-	ctx.bezierCurveTo(570, 500, 490, 400, riverStartRight.x, riverStartRight.y); // ขอบขวา
+	ctx.moveTo(370, 300);
+	ctx.bezierCurveTo(370, 490, 400, 400, 200, 602); // ขอบซ้าย
+	ctx.lineTo(480, 602);
+	ctx.bezierCurveTo(570, 500, 490, 400, 550, 300); // ขอบขวา
 	ctx.closePath();
-	ctx.fillStyle = "#5bf6ff"; // สีฟ้าแม่น้ำ
+	ctx.fillStyle = "#5bf6ff";
 	ctx.fill();
 	ctx.strokeStyle = "#000000";
 	ctx.lineWidth = 2.5;
