@@ -57,28 +57,28 @@ function main(ev) {
 	ctx.fillRect(0, 0, 800, 300); //วาดท้องฟ้า
 
 		//ภูเขา
-	ctx.beginPath(); // เริ่มเส้นทางใหม่
-	ctx.moveTo(0, 250); // จุดเริ่มต้นของ curve
-	ctx.quadraticCurveTo(150, 150, 370, 300); // วาด curve แบบ quadratic
+	ctx.beginPath();
+	ctx.moveTo(0, 250);
+	ctx.quadraticCurveTo(150, 150, 370, 300); 
 	ctx.lineTo(370, 300); // ลากลงมาด้านล่างสุด
 	ctx.lineTo(0, 300); // ลากกลับไปด้านล่างซ้าย
 	ctx.closePath(); // ปิด path
-	ctx.fillStyle = "#5bf660ff"; 
-	ctx.fill(); // เติมสี
-	ctx.strokeStyle = "Green"; // สีเส้น
+	ctx.fillStyle = "#5bf660ff";
+	ctx.fill(); 
+	ctx.strokeStyle = "Green";
 	ctx.lineWidth = 3; 
 	ctx.stroke(); 
 
 		// วาด ภูเขา2
-	ctx.beginPath(); // เริ่มเส้นทางใหม่
-	ctx.moveTo(325, 270); // จุดเริ่มต้นของ curve
+	ctx.beginPath(); 
+	ctx.moveTo(325, 270); 
 	ctx.bezierCurveTo(450, 150, 600, 290, 800, 220); // วาด curve แบบ bezier
 	ctx.lineTo(800, 300); // ลากลงมาด้านล่างสุดของ
 	ctx.lineTo(370, 300); // ลากกลับไปด้านล่างซ้าย
 	ctx.closePath(); // ปิด path
 	ctx.fillStyle = "#5bf660ff";
 	ctx.fill(); 
-	ctx.strokeStyle = "Green"; //สีเส้น
+	ctx.strokeStyle = "Green"; 
 	ctx.lineWidth = 3;
 	ctx.stroke(); 
 
