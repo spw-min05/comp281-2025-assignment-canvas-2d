@@ -29,7 +29,7 @@
 ---
 
 ## ลิงก์วิดีโออธิบาย 
-[ใส่ลิงก์ YouTube ที่นี่]
+https://youtu.be/u0egeqya590?si=J9e3G3tdY8kjL6S0
 
 ---
 
